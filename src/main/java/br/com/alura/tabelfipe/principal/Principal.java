@@ -48,7 +48,7 @@ public class Principal {
         }
 
         List<DadosVeiculo> marcas = conversor.obterDados(json, List.class);
-        marcas.sort(Comparator.comparing(DadosVeiculo::codigo));
+        marcas.sort(Comparator.comparingInt(marca -> Integer.parseInt(marca.codigo())));
         marcas.forEach(marca ->
                 System.out.println("Cód: " + marca.codigo()
                         + " - Descrição: " + marca.nome())
@@ -86,38 +86,21 @@ public class Principal {
         url = url + codModelo + "/anos/";
         json = consumo.obterDados(url);
 
-        List<DadosAno> veiculos = conversor.obterDados(json, List.class);
+        List<DadosVeiculo> anos = conversor.obterDados(json, List.class);
 
-
-        for (DadosAno ano : veiculos){
+        for (DadosVeiculo ano : anos){
             String codigoAno = ano.codigo();
             String urlFinal = url + codigoAno;
 
-            System.out.println(urlFinal);
-
-            json = consumo.obterDados(url);
+            json = consumo.obterDados(urlFinal);
             InformacoesVeiculo infoVeic = conversor.obterDados(json, InformacoesVeiculo.class);
 
-
-
-            System.out.println("Valor: " + infoVeic.valor());
-            System.out.println("Ano: " + infoVeic.marca());
-            System.out.println("Ano: " + infoVeic.modelo());
-            System.out.println("Ano: " + infoVeic.anoModelo());
+            System.out.println("\nAno: " + infoVeic.modelo());
+            System.out.println("Marca: " + infoVeic.marca());
             System.out.println("Combustível: " + infoVeic.combustivel());
+            System.out.println("Ano: " + infoVeic.anoModelo());
+            System.out.println("Valor: " + infoVeic.valor());
             System.out.println("--------------------------");
-
-
         }
-
-
-
-
-
-
-
-        System.out.println(url);
-
-
     }
 }

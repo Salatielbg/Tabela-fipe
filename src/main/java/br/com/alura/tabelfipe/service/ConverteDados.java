@@ -15,17 +15,15 @@ public class ConverteDados implements IConverteDados{
     public <T> T obterDados(String json, Class<T> classe) {
         try {
             if (classe.equals(List.class)){
-                return (T) mapper.readValue(json,
+                return mapper.readValue(json,
                         mapper.getTypeFactory().constructCollectionType(List.class, DadosVeiculo.class));
+            }else{
+                return mapper.readValue(json, classe);
             }
-            return mapper.readValue(json, classe);
         } catch (JsonProcessingException e) {
-            try {
-                return (T) mapper.readValue(json,
-                        mapper.getTypeFactory().constructCollectionType(List.class, DadosAno.class));
-            }catch (JsonProcessingException ex){
-                throw new RuntimeException(e);
-            }
+
+            throw new RuntimeException(e);
+
         }
     }
 }
